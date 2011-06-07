@@ -5,5 +5,5 @@ var server = http.createServer(function(req, res) {
 
 var bayeux = new faye.NodeAdapter({mount: '/bayeux'});
 bayeux.attach(server);
-// var port = process.env.PORT || 3000;
-server.listen(8000);
+var port = process.env.PORT || 3000;
+server.listen(port);
