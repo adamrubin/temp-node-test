@@ -1,9 +1,8 @@
-var http = require('http'),
-    faye = require('faye');
+var http = require('http'), faye = require('faye');
 
 var bayeux = new faye.NodeAdapter({
-  mount:    '/faye',
-  timeout:  45
+  mount: '/faye',
+  timeout: 10
 });
 
 // Handle non-Bayeux requests
@@ -15,5 +14,6 @@ var server = http.createServer(function(request, response) {
 
 var port = process.env.PORT || 3000;
 bayeux.attach(server);
-server.listen(port);
-console.log("Listening on " + port);
+server.listen(port, function() {
+	console.log("Listening on " + port);
+});
