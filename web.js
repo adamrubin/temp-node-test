@@ -1,12 +1,18 @@
-var express = require('express');
+var http = require('http'),
+    faye = require('faye');
 
-var app = express.createServer(express.logger());
+var bayeux = new faye.NodeAdapter({
+  mount:    '/faye',
+  timeout:  45
+});
 
-app.get('/', function(request, response) {
-  response.send('Hello World!');
+// Handle non-Bayeux requests
+var server = http.createServer(function(request, response) {
+  response.writeHead(200, {'Content-Type': 'text/plain'});
+  response.write('Hello, non-Bayeux request');
+  response.end();
 });
 
 var port = process.env.PORT || 3000;
-app.listen(port, function(){
-  console.log("Listening on " + port);
-});
+bayeux.attach(server);
+server.listen(port);
